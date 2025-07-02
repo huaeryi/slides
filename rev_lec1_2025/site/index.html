@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title>rev基础 - 2025安全攻防实践</title>
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <link rel="stylesheet" href="./dist/reset.css" />
+    <link rel="stylesheet" href="./dist/reveal.css" />
+    <link rel="stylesheet" href="./dist/theme/simple.css" id="theme" />
+    <link rel="stylesheet" href="./css/highlight/monokai-sublime.css" />
+
+    <link rel="stylesheet" href="./assets/custom.css" />
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section data-markdown data-separator="<!--s-->" data-separator-vertical="<!--v-->">
+          <textarea data-template>
+            
+
+<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
+<div class="middle center">
+<div style="width: 100%">
+
+
+# Reverse基础 
+
+---
+
+# @huayi  2025.7.4
+
+</div>
+</div>
+
+<!--s-->
+<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
+<div class="middle center">
+<div style="width: 100%">
+
+
+# Part.0 准备工作
+
+</div>
+</div>
+
+<!--v-->
+<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
+## 准备工作
+
+一些需要安装的工具
+
+- linux环境
+- IDA
+- GDB
+
+<!--v-->
+<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
+## 关于逆向
+
+- 一杯茶、一包薯片、一个逆向做一天
+- 赛题加密部分涉及密码学、数学知识；学无止境
+- 大量可用工具；学无止境 plus
+- 逆向核心逻辑十分复杂枯燥；学无止境 plus++
+
+- 与开发联系紧密 
+  - 语言 C/C++ Python Java C# Javascript go 各种汇编语言
+  - 平台 Linux Windows Macos 跨平台
+  - 架构 x86 ARM
+
+<!--v-->
+<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
+## 逆向参考资料
+
+- 看雪论坛 https://www.kanxue.com/ 
+- 吾爱破解 https://www.52pojie.cn/ 
+- CTF Wiki https://ctf-wiki.org/
+
+
+<!--v-->
+<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
+## 逆向课内容介绍
+
+- 逆向基础 程序执行流程 工具使用 代码混淆技术等
+
+- 逆向专题1 游戏/异架构逆向
+
+- 逆向专题2 自动逆向
+
+<!--v-->
+<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
+## 逆向基础课内容
+
+- 预处理、编译、汇编、链接
+- 常见可执行文件结构elf pe   程序执行流程
+- 静态分析工具IDA使用
+- 动态分析 gdb x32dbg/x64dbg Ollydbg
+- 两个简单逆向demo   （1 异或  2 base64变表）
+- 约束求解z3-solver
+
+- 有时间简单介绍
+  - 代码混淆
+  - 壳
+
+
+<!--s-->
+<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
+<div class="middle center">
+<div style="width: 100%">
+
+
+# Part.1 程序编译和执行流程
+
+</div>
+</div>
+
+<!--v-->
+<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
+## 程序编译
+
+- gcc
+
+
+
+<!--v-->
+<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
+## 程序执行
+
+
+
+- __libc_start_main 的内容其实不重要
+  - 重要的是关注 _start
+  - __libc_start_main 的参数
+  - constructor / destructor
+
+<!--v-->
+<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
+## 俯瞰一下逆向的赛题 
+
+
+
+<!--s-->
+<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
+<div class="middle center">
+<div style="width: 100%">
+
+
+# Part.2 工具使用和例题讲解
+
+</div>
+</div>
+
+<!--v-->
+<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
+## IDA
+
+- 常用的快捷键
+  - 查看字符串
+  - 程序流程图
+  - 交叉引用
+  - BinDiff
+    <!--v-->
+    <!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
+## GDB
+
+- GDB
+
+<!--v-->
+<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
+## 例2 lab0 crackme
+
+- 再次审视一下这个程序的结构
+
+<!--v-->
+<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
+## 例3 base64变表加密
+
+- base64加密表
+
+```py
+import base64
+import string
+
+str1 = "x2dtJEOmyjacxDemx2eczT5cVS9fVUGvWTuZWjuexjRqy24rV29q"
+
+string1 = "ZYXABCDEFGHIJKLMNOPQRSTUVWzyxabcdefghijklmnopqrstuvw0123456789+/"
+string2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+
+print (base64.b64decode(str1.translate(str.maketrans(string1,string2))))
+```
+
+<!--v-->
+<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
+## 休息一下吧
+
+<!--s-->
+<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
+<div class="middle center">
+<div style="width: 100%">
+
+
+# Part.3 约束求解和z3-solver
+
+</div>
+</div>
+
+<!--v-->
+<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
+## z3-solver
+
+- z3是一个微软研究院开源的theorem prover(定理证明器)，支持位向量、布尔、数组、浮点数、字符串以及其他数据类型。
+
+```shell
+$ pip3 install z3-solver
+```
+
+- 线性约束方程，用z3一把梭
+
+```py
+from z3 import *
+x,y,z=Ints('x y z')
+s=Solver()
+s.add(2*x+3*y+z==6)
+s.add(x-y+2*z==-1)
+s.add(x+2*y-z==5)
+print s.check()
+print s.model()
+```
+
+
+
+
+<!--s-->
+<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
+<div class="middle center">
+<div style="width: 100%">
+
+
+# Part.4 其他
+
+</div>
+</div>
+
+<!--v-->
+<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
+## 总结
+
+- 预处理、编译、汇编、链接
+- 常见可执行文件结构elf pe   程序执行流程
+- 静态分析工具IDA使用
+- 动态分析 gdb x32dbg/x64dbg Ollydbg
+- 两个简单逆向demo   （1 异或  2 base64变表）
+- 约束求解z3-solver
+
+- 有时间简单介绍
+  - 代码混淆
+  - 壳
+
+
+<!--v-->
+<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
+## 展望
+
+- 了解一下idapython脚本
+
+- 了解下加壳和脱壳技术
+
+- 了解常见混淆技术
+
+- 了解更多编程语言、架构和平台的逆向 可以从游戏出发（逆向专题1的前瞻）
+
+- 深入了解一下约束求解工具z3-sover 尝试使用（逆向专题2的前瞻）
+
+
+
+
+<!--v-->
+<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
+## 作业
+
+- 基础：
+  - Challenge 1: 熟悉IDA和GDB的操作 撰写操作报告
+  - Challenge 2: 复现课上的题目例2例3 并在报告中描述思路和流程
+  - Challenge 3: 完成校巴题目 得到flag并在报告中描述思路和流程
+
+- 挑战：
+  - Challenge 4: 完成circuit(用z3-solver) 
+  - Challenge 5:
+
+
+<!--v-->
+<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
+## 预告
+
+- 逆向专题1 游戏/异架构逆向 @huayi
+  - 异架构以及不同语言的逆向——本质 各种架构介绍/游戏逆向——目的 示例游戏的编写语言 游戏引擎
+  - 6502汇编NES/Windows下的游戏逆向/Python逆向/早期诺基亚Java游戏/Javascript逆向（网页小游戏+代码混淆）/Unity游戏逆向（C# dnspy）
+
+- 逆向专题2 "自动"逆向技巧 @f0rm2l1n 
+  - 引言：人工密集型的逆向过程
+  - 基础：符号执行器基础 - 以 angr 为例
+  - 实战：符号执行用于自动化逆向
+  - 反思：符号执行存在的不足
+  - 拓展：其他"自动"化技巧探讨
+
+
+<!--s-->
+<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
+
+<div class="middle center">
+<div style="width: 100%">
+
+
+# 谢谢大家
+
+---
+
+# questions?
+
+</div>
+</div>
+          </textarea>
+        </section>
+      </div>
+    </div>
+
+    <script src="./dist/reveal.js"></script>
+
+    <script src="./mermaid/dist/mermaid.min.js"></script>
+
+    <script src="./plugin/markdown/markdown.js"></script>
+    <script src="./plugin/highlight/highlight.js"></script>
+    <script src="./plugin/zoom/zoom.js"></script>
+    <script src="./plugin/notes/notes.js"></script>
+    <script src="./plugin/math/math.js"></script>
+    <script>
+      function extend() {
+        var target = {};
+        for (var i = 0; i < arguments.length; i++) {
+          var source = arguments[i];
+          for (var key in source) {
+            if (source.hasOwnProperty(key)) {
+              target[key] = source[key];
+            }
+          }
+        }
+        return target;
+      }
+
+      // default options to init reveal.js
+      var defaultOptions = {
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'default', // none/fade/slide/convex/concave/zoom
+        slideNumber: true,
+        highlight: {
+          highlightOnLoad: false
+        },
+        plugins: [
+          RevealMarkdown,
+          RevealHighlight,
+          RevealZoom,
+          RevealNotes,
+          RevealMath
+        ]
+      };
+
+      // options from URL query string
+      var queryOptions = Reveal().getQueryHash() || {};
+
+      var options = extend(defaultOptions, {"transition":"slide","transitionSpeed":"fast","center":false,"slideNumber":"c/t","width":1000,"_":["working.md"],"static":"../site","assets-dir":"assets","assetsDir":"assets"}, queryOptions);
+    </script>
+
+
+    <script>
+      Reveal.initialize(options);
+      Reveal.addEventListener('ready', function (event) {
+        const blocks = Reveal.getRevealElement().querySelectorAll('pre code:not(.mermaid)');
+        const hlp = Reveal.getPlugin('highlight');
+        blocks.forEach(hlp.highlightBlock);
+      });
+    </script>
+
+    <script>
+      const mermaidOptions = extend({ startOnLoad: false }, {});
+      mermaid.startOnLoad = false;
+      mermaid.initialize(mermaidOptions);
+      const cb = function (event) {
+        mermaid.init(mermaidOptions, '.stack.present > .present pre code.mermaid');
+        mermaid.init(mermaidOptions, '.slides > .present:not(.stack) pre code.mermaid');
+      }
+      Reveal.addEventListener('ready', cb);
+      Reveal.addEventListener('slidetransitionend', cb);
+    </script>
+  </body>
+</html>
