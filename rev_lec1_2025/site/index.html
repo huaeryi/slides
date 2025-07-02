@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="./dist/reset.css" />
     <link rel="stylesheet" href="./dist/reveal.css" />
     <link rel="stylesheet" href="./dist/theme/simple.css" id="theme" />
-    <link rel="stylesheet" href="./css/highlight/monokai-sublime.css" />
+    <link rel="stylesheet" href="./css/highlight/github.css" />
 
     <link rel="stylesheet" href="./assets/custom.css" />
   </head>
@@ -20,23 +20,20 @@
           <textarea data-template>
             
 
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
 
 <div class="middle center">
 <div style="width: 100%">
 
-
 # Reverse基础 
-
 ---
-
 # @huayi  2025.7.4
 
 </div>
 </div>
 
 <!--s-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
 
 <div class="middle center">
 <div style="width: 100%">
@@ -48,18 +45,22 @@
 </div>
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
 
 ## 准备工作
 
 一些需要安装的工具
+<!-- <img style="float: right; margin-right: 15px;" width="80%" src="figures/1.jpg"> -->
 
-- linux环境
+- linux环境(wsl/vmware)
+- Python环境
+  - z3-solver
 - IDA
 - GDB
 
+
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
 
 ## 关于逆向
 
@@ -69,12 +70,12 @@
 - 逆向核心逻辑十分复杂枯燥；学无止境 plus++
 
 - 与开发联系紧密 
-  - 语言 C/C++ Python Java C# Javascript go 各种汇编语言
-  - 平台 Linux Windows Macos 跨平台
-  - 架构 x86 ARM
+    - 语言 C/C++ Python Java C# Javascript go 以及各种汇编语言
+    - 平台 Linux Windows Macos 跨平台
+    - 架构 x86 ARM
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
 
 ## 逆向参考资料
 
@@ -84,35 +85,35 @@
 
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
 
 ## 逆向课内容介绍
 
-- 逆向基础 程序执行流程 工具使用 代码混淆技术等
+- 逆向基础 程序编译 程序执行流程 工具使用 约束求解等
 
 - 逆向专题1 游戏/异架构逆向
 
 - 逆向专题2 自动逆向
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
 
 ## 逆向基础课内容
 
 - 预处理、编译、汇编、链接
-- 常见可执行文件结构elf pe   程序执行流程
+- elf可执行文件结构
 - 静态分析工具IDA使用
-- 动态分析 gdb x32dbg/x64dbg Ollydbg
-- 两个简单逆向demo   （1 异或  2 base64变表）
+- 动态分析 
+    - linux gdb
+    - windows x32dbg/x64dbg Ollydbg
 - 约束求解z3-solver
-
 - 有时间简单介绍
-  - 代码混淆
-  - 壳
+    - 代码混淆
+    - 壳
 
 
 <!--s-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
 
 <div class="middle center">
 <div style="width: 100%">
@@ -124,35 +125,33 @@
 </div>
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
 
 ## 程序编译
-
-- gcc
+- CALL
+- gcc 
 
 
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
 
 ## 程序执行
 
 
-
 - __libc_start_main 的内容其实不重要
-  - 重要的是关注 _start
-  - __libc_start_main 的参数
-  - constructor / destructor
+    - 重要的是关注 _start
+    - __libc_start_main 的参数
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
 
 ## 俯瞰一下逆向的赛题 
 
 
 
 <!--s-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
 
 <div class="middle center">
 <div style="width: 100%">
@@ -164,55 +163,57 @@
 </div>
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
 
 ## IDA
 
 - 常用的快捷键
-  - 查看字符串
-  - 程序流程图
-  - 交叉引用
-  - BinDiff
-    <!--v-->
-    <!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+  - 查看字符串 `Shift+F12`
+  - 交叉引用 `x`
+  - 地址跳转 `g`
+  
+<!--v-->
 
 ## GDB
-
 - GDB
+```sh
+r
+b <address>
+c
+```
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
 
 ## 例2 lab0 crackme
 
 - 再次审视一下这个程序的结构
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
 
-## 例3 base64变表加密
 
+## 例3 base64
 - base64加密表
 
 ```py
 import base64
 import string
 
-str1 = "x2dtJEOmyjacxDemx2eczT5cVS9fVUGvWTuZWjuexjRqy24rV29q"
+str1 = "RjS2WUGwWS80U2W1yfB="
 
 string1 = "ZYXABCDEFGHIJKLMNOPQRSTUVWzyxabcdefghijklmnopqrstuvw0123456789+/"
 string2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
 
-print (base64.b64decode(str1.translate(str.maketrans(string1,string2))))
+print(base64.b64decode(str1.translate(str.maketrans(string1,string2))))
 ```
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
 
 ## 休息一下吧
 
 <!--s-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
 
 <div class="middle center">
 <div style="width: 100%">
@@ -224,7 +225,7 @@ print (base64.b64decode(str1.translate(str.maketrans(string1,string2))))
 </div>
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
 
 ## z3-solver
 
@@ -240,47 +241,57 @@ $ pip3 install z3-solver
 from z3 import *
 x,y,z=Ints('x y z')
 s=Solver()
-s.add(2*x+3*y+z==6)
-s.add(x-y+2*z==-1)
-s.add(x+2*y-z==5)
-print s.check()
-print s.model()
+s.add(2*x+3*y+z==100)
+s.add(x-y+2*z==-10)
+s.add(x+2*y-z==212)
+print(s.check())
+print(s.model())
 ```
 
 
 
-
 <!--s-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
+
 
 <div class="middle center">
 <div style="width: 100%">
 
 
-# Part.4 其他
+# Part.4 代码混淆和壳
+
+</div>
+</div>
+<!--v-->
+
+
+## 代码混淆
+
+
+<!--v-->
+
+## 壳
+
+
+<div class="middle center">
+<div style="width: 100%">
+<!--s-->
+
+# Part.5 其他
 
 </div>
 </div>
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
 
 ## 总结
-
-- 预处理、编译、汇编、链接
-- 常见可执行文件结构elf pe   程序执行流程
-- 静态分析工具IDA使用
-- 动态分析 gdb x32dbg/x64dbg Ollydbg
-- 两个简单逆向demo   （1 异或  2 base64变表）
-- 约束求解z3-solver
-
-- 有时间简单介绍
-  - 代码混淆
-  - 壳
+- linux下可执行文件的编译和执行
+- 熟悉IDA界面和常用
 
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
 
 ## 展望
 
@@ -292,45 +303,44 @@ print s.model()
 
 - 了解更多编程语言、架构和平台的逆向 可以从游戏出发（逆向专题1的前瞻）
 
-- 深入了解一下约束求解工具z3-sover 尝试使用（逆向专题2的前瞻）
+- 尝试练习一下约束求解工具z3-sover （逆向专题2的前瞻）
 
 
 
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
 
 ## 作业
 
 - 基础：
-  - Challenge 1: 熟悉IDA和GDB的操作 撰写操作报告
-  - Challenge 2: 复现课上的题目例2例3 并在报告中描述思路和流程
-  - Challenge 3: 完成校巴题目 得到flag并在报告中描述思路和流程
+    - Challenge 1: 复现hello.c的编译执行流程 撰写操作报告
+    - Challenge 2: 熟悉IDA和GDB的操作 撰写操作报告
+    - Challenge 3: 复现课上的题目例2例3 并在报告中描述思路和流程
 
 - 挑战：
-  - Challenge 4: 完成circuit(用z3-solver) 
-  - Challenge 5:
+    - Challenge 4: 完成circuit(用z3-solver) 
+    - Challenge 5:
 
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
+
 
 ## 预告
 
 - 逆向专题1 游戏/异架构逆向 @huayi
-  - 异架构以及不同语言的逆向——本质 各种架构介绍/游戏逆向——目的 示例游戏的编写语言 游戏引擎
-  - 6502汇编NES/Windows下的游戏逆向/Python逆向/早期诺基亚Java游戏/Javascript逆向（网页小游戏+代码混淆）/Unity游戏逆向（C# dnspy）
+    - 异架构以及不同语言的逆向——本质 各种架构介绍/游戏逆向——目的 示例游戏的编写语言 游戏引擎
+    - 6502汇编NES/Windows下的游戏逆向/Python逆向/早期诺基亚Java游戏/Javascript逆向（网页小游戏+代码混淆）/Unity游戏逆向（C# dnspy）
 
 - 逆向专题2 "自动"逆向技巧 @f0rm2l1n 
-  - 引言：人工密集型的逆向过程
-  - 基础：符号执行器基础 - 以 angr 为例
-  - 实战：符号执行用于自动化逆向
-  - 反思：符号执行存在的不足
-  - 拓展：其他"自动"化技巧探讨
+    - 引言：人工密集型的逆向过程
+    - 基础：符号执行器基础 - 以 angr 为例
+    - 实战：符号执行用于自动化逆向
+    - 反思：符号执行存在的不足
+    - 拓展：其他"自动"化技巧探讨
 
 
 <!--s-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
 
 
 <div class="middle center">

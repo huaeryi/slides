@@ -3,7 +3,7 @@ title: rev专题一 - 2025安全攻防实践
 separator: <!--s-->
 verticalSeparator: <!--v-->
 theme: simple
-highlightTheme: monokai-sublime
+highlightTheme: github
 css:
     - custom.css
 revealOptions:
@@ -16,7 +16,6 @@ revealOptions:
 ---
 
 <!--s-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
 
 <div class="middle center">
 <div style="width: 100%">
@@ -32,7 +31,6 @@ revealOptions:
 </div>
 
 <!--s-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
 
 <div class="middle center">
 <div style="width: 100%">
@@ -44,78 +42,35 @@ revealOptions:
 </div>
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
 
 ## 准备工作
 
 一些需要安装的工具
 
-- linux环境
-- IDA
-- GDB
+- windows环境
+- CE
+- x64dbg/ollydbg
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
-
-## 关于逆向
-
-- 一杯茶、一包薯片、一个逆向做一天
-- 赛题加密部分涉及密码学、数学知识；学无止境
-- 大量可用工具；学无止境 plus
-
-- 逆向核心逻辑十分枯燥
-
-- 与开发联系紧密 
-  - 语言 C/C++ Python Java C# Javascript go 各种汇编语言
-  - 平台 Linux Windows Macos 
-  - 架构 x86 ARM
-
-<!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
-
-## 逆向参考资料
-
-- 一杯茶、一包薯片、一个逆向做一天
-- 赛题加密部分涉及密码学、数学知识；学无止境
-- 大量可用工具；学无止境 plus
-
-- 逆向核心逻辑十分枯燥
-
-- 与开发联系紧密 
-  - 语言 C/C++ Python Java C# Javascript go 各种汇编语言
-  - 平台 Linux Windows Macos 
-  - 架构 x86 ARM
-
-<!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
-
-## 逆向课内容介绍
-
-- 逆向基础 程序执行流程 工具使用 代码混淆技术等
-
-- 逆向专题1 游戏/异架构逆向
-
-- 逆向专题2 自动逆向
-
-<!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
 
 ## 逆向专题一内容
 
-- 预处理、编译、汇编、链接
-- 常见可执行文件结构elf pe   程序执行流程
-- 静态分析工具IDA使用
-- 动态分析 gdb x32dbg/x64dbg Ollydbg
-- 两个简单逆向demo   （1 异或  2 base64变表）
-- 约束求解z3-solver
+- 异架构以及不同语言的逆向——本质 各种架构介绍
+- 游戏逆向——目的  示例游戏的编写语言 游戏引擎
+- 6502汇编 NES （BeginCTF红白机）
 
-- 有时间简单介绍
-  - 代码混淆
-  - 壳
+- Windows下的游戏逆向（pvz CE）
+
+- Python逆向（反编译pyc）
+
+- 古早Java游戏（诺基亚贪吃蛇 未定）
+
+- Javascript逆向（网页小游戏+代码混淆）
+
+- Unity游戏逆向（C# dnspy）
 
 
 <!--s-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
 
 <div class="middle center">
 <div style="width: 100%">
@@ -127,11 +82,9 @@ revealOptions:
 </div>
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
 
 ## 程序编译
 
-<img style="float: right; margin-right: 15px;" width="40%" src="rev-lec1/ida-view.webp">
 
 一些会很好用的 subview：
 
@@ -153,7 +106,6 @@ revealOptions:
 </div>
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
 
 ## 程序执行
 
@@ -172,7 +124,6 @@ revealOptions:
   - 敢于猜测复杂函数的功能，避免陷入细节
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
 
 ## 俯瞰一下逆向的赛题 
 
@@ -187,7 +138,6 @@ revealOptions:
   - 哈希算法
 
 <!--s-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
 
 <div class="middle center">
 <div style="width: 100%">
@@ -199,7 +149,6 @@ revealOptions:
 </div>
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
 
 ## GDB 的一些技巧
 
@@ -214,7 +163,6 @@ revealOptions:
   - gdbscript
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
 
 ## .gdbinit
 
@@ -225,7 +173,6 @@ revealOptions:
 - GDB 插件大多是通过 .gdbinit 加载的
 
 <!--s-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
 
 <div class="middle center">
 <div style="width: 100%">
@@ -237,7 +184,6 @@ revealOptions:
 </div>
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
 
 ## 主流的架构
 
@@ -250,7 +196,6 @@ revealOptions:
 - RISC-V
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
 
 ## 异架构的调试
 
@@ -264,7 +209,6 @@ revealOptions:
   - 使用 objcopy 转换格式
 
 <!--s-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
 
 <div class="middle center">
 <div style="width: 100%">
@@ -276,7 +220,6 @@ revealOptions:
 </div>
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
 
 ## Java
 
@@ -291,7 +234,6 @@ revealOptions:
   - 涉及到 Java 反射 / 字节码操作 / 本地方法
 
 <!--v-->
-<!-- .slide: data-background="figures/background.png" data-background-size="1140px"-->
 
 ## 其他语言
 
