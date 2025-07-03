@@ -63,7 +63,7 @@ revealOptions:
 
 - Python逆向（反编译pyc）
 
-- 古早Java游戏（诺基亚贪吃蛇 未定）
+- 古早Java游戏（诺基亚贪吃蛇）
 
 - Javascript逆向（网页小游戏+代码混淆）
 
