@@ -171,12 +171,11 @@ gcc hello.c -o hello
 
 ## 俯瞰一下逆向的赛题
 <img src="figures/rev1.jpg">
-<!--v-->
 
 <!--s-->
+
 <div class="middle center">
 <div style="width: 100%">
-
 
 
 # Part.2 工具使用和例题讲解
